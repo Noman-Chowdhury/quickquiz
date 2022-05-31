@@ -1,0 +1,8 @@
+DB::beginTransaction();
+        try {
+
+            DB::commit();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+             return $this->basicErrorResponse($exception->getMessage());
+        }

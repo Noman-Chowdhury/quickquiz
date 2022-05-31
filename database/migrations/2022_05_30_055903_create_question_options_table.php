@@ -13,15 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('question_options', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('phone_number')->unique()->nullable();
-            $table->timestamp('phone_number_verified_at')->nullable();
-            $table->rememberToken();
+            $table->foreignId('question_id')->constrained('questions')->cascadeOnDelete();
+            $table->text('option');
+            $table->boolean('is_correct_option');
             $table->timestamps();
         });
     }
@@ -33,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('question_options');
     }
 };

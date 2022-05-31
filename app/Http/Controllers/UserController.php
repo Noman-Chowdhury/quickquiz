@@ -83,25 +83,15 @@ class UserController extends Controller {
         }
 
         $plainTextToken = $user->createToken('hydra-api-token', $_roles)->plainTextToken;
-        return response(['error' => 0, 'id' => $user->id, 'token' => $plainTextToken], 200);
+        return response(['error' => 0, 'id' => $user->id, 'token' => $plainTextToken , 'role'=>$user->roles], 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
     public function show(User $user) {
         return $user;
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
+     * @throws MissingAbilityException
      */
     public function update(Request $request, User $user) {
         $user->name = $request->name ?? $user->name;
@@ -109,7 +99,7 @@ class UserController extends Controller {
         $user->password = $request->password ?  Hash::make($request->password) : $user->password;
         $user->email_verified_at = $request->email_verified_at ?? $user->email_verified_at;
 
-        //check if the logged in user is updating it's own record
+        //check if the logged-in user is updating it's own record
 
 
         $loggedInUser = $request->user();

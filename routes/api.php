@@ -22,8 +22,6 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::get('hydra',[HydraController::class,'hydra']);
-Route::get('hydra/version',[HydraController::class,'version']);
 
 Route::apiResource('users',UserController::class)->except(['edit','create','store','update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 Route::post('users',[UserController::class,'store']);
@@ -35,3 +33,11 @@ Route::post('login',[UserController::class,'login']);
 
 Route::apiResource('roles',RoleController::class)->except(['create','edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles',UserRoleController::class)->except(['create','edit','show','update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
+
+Route::apiResource('quiz', \App\Http\Controllers\Api\QuizController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin']);
+Route::apiResource('question', \App\Http\Controllers\Api\QuestionController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin']);
+
+Route::get('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'getTodaysQuestions']);
+Route::post('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'submitAnswers'])->middleware(['auth:sanctum', 'ability:user']);
+
+
