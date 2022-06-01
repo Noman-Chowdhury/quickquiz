@@ -32,4 +32,10 @@ class questionStoreReq extends FormRequest
             'feedback' => ['string']
         ];
     }
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'quiz_id'=>1
+        ]);
+    }
 }

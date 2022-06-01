@@ -29,6 +29,7 @@ class QuestionController extends Controller
             }
             DB::commit();
         } catch (\Exception $exception) {
+            return $exception;
             DB::rollBack();
             return $this->basicErrorResponse($exception->getMessage());
         }
