@@ -5,6 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @method static whereIn(string $string, $toArray)
+ */
 class Question extends Model
 {
     use HasFactory;
@@ -26,4 +29,5 @@ class Question extends Model
     {
         return $this->belongsTo(Quiz::class,'quiz_id');
     }
+
 }

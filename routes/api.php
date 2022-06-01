@@ -38,6 +38,7 @@ Route::apiResource('quiz', \App\Http\Controllers\Api\QuizController::class)->mid
 Route::apiResource('question', \App\Http\Controllers\Api\QuestionController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
 Route::get('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'getTodaysQuestions']);
-Route::post('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'submitAnswers'])->middleware(['auth:sanctum', 'ability:user']);
+//Route::post('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'submitAnswers'])->middleware(['auth:sanctum', 'ability:user']);
+Route::post('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'submitAnswers']);
 
 

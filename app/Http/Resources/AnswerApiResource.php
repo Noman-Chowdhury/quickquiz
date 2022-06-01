@@ -17,7 +17,7 @@ class AnswerApiResource extends JsonResource
         return [
             'id'=>$this->id,
             'option'=>$this->option,
-            'is_correct_answer'=> $this->is_correct_option
+//            'is_correct_answer'=> $this->is_correct_option
         ];
     }
 }

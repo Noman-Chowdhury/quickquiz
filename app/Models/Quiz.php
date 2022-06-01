@@ -15,4 +15,9 @@ class Quiz extends Model
         'expired_at'
     ];
 
+    public function questions()
+    {
+        return $this->hasMany(Question::class,'quiz_id');
+    }
+
 }

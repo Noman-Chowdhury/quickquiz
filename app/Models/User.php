@@ -9,6 +9,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Role;
 
+/**
+ * @method static find(int $int)
+ */
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -48,5 +51,15 @@ class User extends Authenticatable
 
     public function roles(){
         return $this->belongsToMany(Role::class,'user_roles');
+    }
+
+    public function todaysQuestions()
+    {
+        return $this->hasMany(UserQuestion::class, 'user_id')->whereDay('answer_time', today());
+    }
+
+    public function submittedQuestions()
+    {
+        return $this->hasMany(UserQuestion::class, 'user_id');
     }
 }
