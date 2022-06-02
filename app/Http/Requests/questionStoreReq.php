@@ -32,7 +32,9 @@ class questionStoreReq extends FormRequest
             'question_type' => ['string', 'in:radio,checkbox', 'select'],
             'point' => ['required', 'numeric'],
             'options' => ['array'],
-            'feedback' => ['string']
+            'feedback' => ['string'],
+            'options.*.is_correct_option' => ['required'],
+            'options.*.option' => ['required'],
         ];
     }
 
