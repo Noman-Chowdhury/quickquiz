@@ -23,9 +23,9 @@ class UsersSeeder extends Seeder
         Schema::enableForeignKeyConstraints();
 
         User::create([
-            'email'=>'admin@hydra.project',
-            'password'=>Hash::make('hydra'),
-            'name'=>'Hydra Admin'
+            'email'=>'admin@quiz',
+            'password'=>Hash::make('12345678'),
+            'name'=>'Quiz Admin'
         ]);
     }
 }

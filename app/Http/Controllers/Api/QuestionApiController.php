@@ -24,12 +24,13 @@ class QuestionApiController extends Controller
 //        $questions = Question::with(['options', 'quiz'])->whereHas('quiz', function ($query) {
 //            return $query->where('publish_at', date('Y-m-d'));
 //        })->get();
-        if (sizeof(User::find(2)->todaysQuestions) > 0) {
+        if (User::find(2)->todaysQuestions()->count() > 0) {
             return response()->json(['success'=>false, 'message' => 'You cannot get more quiz question today. Please come again tomorrow!'],404);
         }
         $user_prev_ques = User::find(2)->submittedQuestions()->pluck('question_id')->toArray();
-        $questions = Question::with(['options', 'quiz'])->whereNotIn('id', $user_prev_ques)->inRandomOrder()->take(10)->get();
-
+        $questions = Question::with(['options', 'quiz'])->whereHas('quiz', function ($q){
+            return $q->whereDate('publish_at','<=', Carbon::now())->whereDate('expired_at','>=', Carbon::now());
+        })->whereNotIn('id', $user_prev_ques)->inRandomOrder()->take(10)->get();
         foreach ($questions as $ns) {
             $submit = new UserQuestion();
             $submit->user_id = 2;
