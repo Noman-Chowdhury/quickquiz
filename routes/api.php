@@ -41,4 +41,6 @@ Route::get('user/questions', [\App\Http\Controllers\Api\QuestionApiController::c
 //Route::post('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'submitAnswers'])->middleware(['auth:sanctum', 'ability:user']);
 Route::post('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'submitAnswers']);
 
+Route::get('user/submitted/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'getSubmittedQuestions']);
+
 

@@ -17,12 +17,12 @@ class UserQuestion extends Model
 
     public function answers()
     {
-        return $this->hasMany(UserAnswer::class,'user_question_id');
+        return $this->hasMany(UserQuestionAnswer::class,'user_question_id');
     }
 
     public function answer()
     {
-        return $this->hasOne(UserAnswer::class,'user_question_id');
+        return $this->hasOne(UserQuestionAnswer::class,'user_question_id');
     }
 
     public function user()
