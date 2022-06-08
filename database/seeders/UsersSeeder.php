@@ -25,7 +25,8 @@ class UsersSeeder extends Seeder
         User::create([
             'email'=>'admin@quiz',
             'password'=>Hash::make('12345678'),
-            'name'=>'Quiz Admin'
+            'name'=>'Quiz Admin',
+            'phone_number'=>'01682101354'
         ]);
     }
 }

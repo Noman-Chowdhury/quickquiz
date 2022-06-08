@@ -17,6 +17,11 @@ use Illuminate\Support\Facades\DB;
 
 class QuestionApiController extends Controller
 {
+    public function __construct()
+    {
+        $this->auth_user = auth('sanctum')->user();
+    }
+
     public function getTodaysQuestions(): \Illuminate\Http\JsonResponse
     {
 //        return today();
@@ -24,16 +29,16 @@ class QuestionApiController extends Controller
 //        $questions = Question::with(['options', 'quiz'])->whereHas('quiz', function ($query) {
 //            return $query->where('publish_at', date('Y-m-d'));
 //        })->get();
-        if (User::find(2)->todaysQuestions()->count() > 0) {
+        if ($this->auth_user->todaysQuestions()->count() > 0) {
             return response()->json(['success'=>false, 'message' => 'You cannot get more quiz question today. Please come again tomorrow!'],404);
         }
-        $user_prev_ques = User::find(2)->submittedQuestions()->pluck('question_id')->toArray();
+        $user_prev_ques = $this->auth_user->submittedQuestions()->pluck('question_id')->toArray();
         $questions = Question::with(['options', 'quiz'])->whereHas('quiz', function ($q){
             return $q->whereDate('publish_at','<=', Carbon::now())->whereDate('expired_at','>=', Carbon::now());
         })->whereNotIn('id', $user_prev_ques)->inRandomOrder()->take(10)->get();
         foreach ($questions as $ns) {
             $submit = new UserQuestion();
-            $submit->user_id = 2;
+            $submit->user_id = $this->auth_user->id;
             $submit->question_id = $ns->id;
             $submit->answer_time = Carbon::now();
             $submit->is_correct = false;
@@ -49,7 +54,7 @@ class QuestionApiController extends Controller
         try {
             if (sizeof($request->answers) > 0) {
                 foreach ($request->answers as $answer) {
-                    $ques = UserQuestion::where(['user_id'=>2,'question_id'=>$answer['question_id']])->whereDay('answer_time', Carbon::now())->first();
+                     $ques = UserQuestion::where(['user_id'=>$this->auth_user->id,'question_id'=>$answer['question_id']])->whereDay('answer_time', Carbon::now())->first();
                     $ques->is_correct = QuestionOption::find($answer['answer_id'])->is_correct_option;
                     $ques->save();
 
@@ -82,7 +87,7 @@ class QuestionApiController extends Controller
             return $err->getMessage();
         }
 
-        $submitted_questions = User::find(2)->todaysQuestions;
+        $submitted_questions = $this->auth_user->todaysQuestions;
 
         $quiz_questions = Question::whereIn('id', $submitted_questions->pluck('question_id')->toArray());
 
@@ -97,10 +102,23 @@ class QuestionApiController extends Controller
 
     public function getSubmittedQuestions()
     {
-        $submitted_questions = User::find(2)->todaysQuestions;
+        $submitted_questions = $this->auth_user->todaysQuestions;
 
         $quiz_questions = Question::whereIn('id', $submitted_questions->pluck('question_id')->toArray())->get();
 
         return response()->json(['success' => true, 'questions' => ResultApiResource::collection($submitted_questions)],);
+    }
+
+    public function availableQuiz()
+    {
+        if ($this->auth_user->todaysQuestions()->count() > 0) {
+            return false;
+        }
+        $user_prev_ques = $this->auth_user->submittedQuestions()->pluck('question_id')->toArray();
+        $questions = Question::with(['options', 'quiz'])->whereHas('quiz', function ($q){
+            return $q->whereDate('publish_at','<=', Carbon::now())->whereDate('expired_at','>=', Carbon::now());
+        })->whereNotIn('id', $user_prev_ques)->inRandomOrder()->take(10)->get();
+
+        return $questions->count() > 0;
     }
 }

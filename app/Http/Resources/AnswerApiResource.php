@@ -21,7 +21,7 @@ class AnswerApiResource extends JsonResource
             'option' => $this->option,
             'is_correct_answer' => $this->when($request->route()->uri() === 'api/user/submitted/questions', $this->is_correct_option),
             'is_user_selected' => $this->when($request->route()->uri() === 'api/user/submitted/questions', UserQuestionAnswer::whereHas('userQuestion', function ($q) {
-                return $q->where('user_id', 2);
+                return $q->where('user_id', auth('sanctum')->user()->id);
             })->where(['option_id' => $this->id])->exists()),
         ];
     }

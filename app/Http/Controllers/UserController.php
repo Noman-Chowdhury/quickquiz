@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -29,18 +30,19 @@ class UserController extends Controller {
      */
     public function store(Request $request) {
         $creds = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-            'name' => 'nullable|string'
+            'email' => 'email',
+            'password' => ['required', Password::min(8)->uncompromised()],
+            'name' => 'nullable|string',
+            'phone_number'=> ['required','numeric','digits:11','regex:/^(?:\+?88)?01[3-9]\d{8}$/', 'unique:users,phone_number'],
         ]);
 
-        $user = User::where('email', $creds['email'])->first();
+        $user = User::where('phone_number', $creds['phone_number'])->first();
         if ($user) {
             return response(['error' => 1, 'message' => 'user already exists'], 409);
         }
 
         $user = User::create([
-            'email' => $creds['email'],
+            'phone_number' => $creds['phone_number'],
             'password' => Hash::make($creds['password']),
             'name' => $creds['name']
         ]);
@@ -62,11 +64,11 @@ class UserController extends Controller {
      */
     public function login(Request $request) {
         $creds = $request->validate([
-            'email' => 'required|email',
+            'phone_number' => ['required', 'exists:users,phone_number'],
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $creds['email'])->first();
+        $user = User::where('phone_number', $creds['phone_number'])->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response(['error' => 1, 'message' => 'invalid credentials'], 401);
         }
