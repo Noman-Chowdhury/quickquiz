@@ -20,4 +20,9 @@ class UserQuestionAnswer extends Model
       'is_correct_option',
       'answer_time'
     ];
+
+    public function userQuestion()
+    {
+        return $this->belongsTo(UserQuestion::class,'user_question_id');
+    }
 }

@@ -37,8 +37,12 @@ Route::apiResource('users.roles',UserRoleController::class)->except(['create','e
 Route::apiResource('quiz', \App\Http\Controllers\Api\QuizController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 Route::apiResource('question', \App\Http\Controllers\Api\QuestionController::class);
 
-Route::get('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'getTodaysQuestions']);
+Route::get('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'getTodaysQuestions'])->middleware('auth:sanctum');
 //Route::post('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'submitAnswers'])->middleware(['auth:sanctum', 'ability:user']);
-Route::post('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'submitAnswers']);
+Route::post('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'submitAnswers'])->middleware('auth:sanctum');
+
+Route::get('user/submitted/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'getSubmittedQuestions'])->middleware('auth:sanctum');
+
+Route::get('user/today', [\App\Http\Controllers\Api\QuestionApiController::class,'availableQuiz'])->middleware('auth:sanctum');
 
 
