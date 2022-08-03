@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
@@ -30,7 +31,6 @@ class UserController extends Controller {
      */
     public function store(Request $request) {
         $creds = $request->validate([
-            'email' => 'email',
             'password' => ['required', Password::min(8)->uncompromised()],
             'name' => 'nullable|string',
             'phone_number'=> ['required','numeric','digits:11','regex:/^(?:\+?88)?01[3-9]\d{8}$/', 'unique:users,phone_number'],
@@ -142,5 +142,12 @@ class UserController extends Controller {
 
     public function me(Request $request) {
         return $request->user();
+    }
+    public function logout()
+    {
+        auth()->user()->currentAccessToken()->delete();
+        return [
+            'message'=>'Successfully Logged out'
+        ];
     }
 }
