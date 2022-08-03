@@ -30,6 +30,7 @@ Route::post('users/{user}',[UserController::class,'update'])->middleware(['auth:
 Route::patch('users/{user}',[UserController::class,'update'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::get('me',[UserController::class,'me'])->middleware('auth:sanctum');
 Route::post('login',[UserController::class,'login']);
+Route::post('logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::apiResource('roles',RoleController::class)->except(['create','edit'])->middleware(['auth:sanctum', 'ability:admin,super-admin,user']);
 Route::apiResource('users.roles',UserRoleController::class)->except(['create','edit','show','update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
