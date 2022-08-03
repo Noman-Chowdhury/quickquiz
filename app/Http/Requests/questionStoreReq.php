@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Models\Question;
 use App\Models\Quiz;
+use App\Rules\AtLeastOneRequired;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -31,9 +32,8 @@ class questionStoreReq extends FormRequest
             'question' => ['required', 'string'],
             'question_type' => ['string', 'in:radio,checkbox', 'select'],
             'point' => ['required', 'numeric'],
-            'options' => ['array'],
+            'options' => ['required',new AtLeastOneRequired()],
             'feedback' => ['string'],
-            'options.*.is_correct_option' => ['required'],
             'options.*.option' => ['required'],
         ];
     }

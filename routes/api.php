@@ -46,4 +46,6 @@ Route::get('user/submitted/questions', [\App\Http\Controllers\Api\QuestionApiCon
 
 Route::get('user/today', [\App\Http\Controllers\Api\QuestionApiController::class,'availableQuiz'])->middleware('auth:sanctum');
 
+Route::post('user/contribute/questions',[ \App\Http\Controllers\Api\QuestionApiController::class, 'contributeQuestion'])->middleware('auth:sanctum');
+
 

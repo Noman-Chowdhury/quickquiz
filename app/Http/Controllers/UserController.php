@@ -141,7 +141,9 @@ class UserController extends Controller {
     }
 
     public function me(Request $request) {
-        return $request->user();
+        $user =  $request->user();
+        $user->role = $user->currentAccessToken()->abilities[0];
+        return $user;
     }
     public function logout()
     {

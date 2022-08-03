@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ContributeQuestionRequest;
 use App\Http\Resources\QuestionApiResource;
 use App\Http\Resources\ResultApiResource;
 use App\Models\Question;
 use App\Models\QuestionOption;
 use App\Models\Quiz;
+use App\Models\TempQuestions;
 use App\Models\User;
 use App\Models\UserQuestion;
 use App\Models\UserQuestionAnswer;
@@ -120,5 +122,21 @@ class QuestionApiController extends Controller
         })->whereNotIn('id', $user_prev_ques)->inRandomOrder()->take(10)->get();
 
         return $questions->count() > 0;
+    }
+
+    public function contributeQuestion(ContributeQuestionRequest $request)
+    {
+         $validated = $request->validated();
+        try {
+            $arr = [];
+            foreach ($validated['options'] as $option){
+                $arr[] = $option['option'];
+            }
+            $validated['options'] = json_encode($arr);
+            TempQuestions::create($validated);
+        }catch (\Exception $err){
+            return $err->getMessage();
+        }
+        return response()->json(['message' => 'Question Added']);
     }
 }
