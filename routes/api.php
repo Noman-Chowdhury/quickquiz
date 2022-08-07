@@ -51,4 +51,4 @@ Route::post('user/contribute/questions',[ \App\Http\Controllers\Api\QuestionApiC
 
 Route::get('contributed-questions', [\App\Http\Controllers\Api\QuestionController::class, 'contributedQuestions']);
 
-
+Route::get('user/weekly-history',[\App\Http\Controllers\Api\QuizHistoryApiController::class,'myWeeklyHistory'])->middleware('auth:sanctum');

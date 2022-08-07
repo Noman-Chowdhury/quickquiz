@@ -64,7 +64,7 @@ class QuestionController extends Controller
 
     public function contributedQuestions()
     {
-        $questions =  TempQuestions::with('user')->get();
+        $questions =  TempQuestions::with('user')->latest()->get();
 
         return response()->json(['success' => true, 'questions' => TempQuesRes::collection($questions)],);
     }

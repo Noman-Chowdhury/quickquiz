@@ -9,6 +9,8 @@ class Quiz extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     protected $fillable = [
         'title',
         'publish_at',
@@ -17,7 +19,7 @@ class Quiz extends Model
 
     public function questions()
     {
-        return $this->hasMany(Question::class,'quiz_id');
+        return $this->hasMany(Question::class,'quiz_id','id');
     }
 
 }

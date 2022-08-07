@@ -40,6 +40,7 @@ class QuestionApiController extends Controller
         })->whereNotIn('id', $user_prev_ques)->inRandomOrder()->take(10)->get();
         foreach ($questions as $ns) {
             $submit = new UserQuestion();
+            $submit->quiz_id = $ns->quiz_id;
             $submit->user_id = $this->auth_user->id;
             $submit->question_id = $ns->id;
             $submit->answer_time = Carbon::now();
