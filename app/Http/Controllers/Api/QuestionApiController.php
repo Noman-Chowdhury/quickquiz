@@ -137,6 +137,6 @@ class QuestionApiController extends Controller
         }catch (\Exception $err){
             return $err->getMessage();
         }
-        return response()->json(['message' => 'Question Added']);
+        return $this->basicSuccessResponse('Question added successfully');
     }
 }

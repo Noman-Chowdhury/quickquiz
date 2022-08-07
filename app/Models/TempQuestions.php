@@ -9,5 +9,10 @@ class TempQuestions extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['question', 'options', 'correct_ans', 'reference'];
+    protected $fillable = ['user_id','question', 'options', 'correct_ans', 'reference'];
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
 }

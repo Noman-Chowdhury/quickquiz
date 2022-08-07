@@ -36,6 +36,7 @@ Route::apiResource('roles',RoleController::class)->except(['create','edit'])->mi
 Route::apiResource('users.roles',UserRoleController::class)->except(['create','edit','show','update'])->middleware(['auth:sanctum', 'ability:admin,super-admin']);
 
 Route::apiResource('quiz', \App\Http\Controllers\Api\QuizController::class)->middleware(['auth:sanctum', 'ability:admin,super-admin']);
+
 Route::apiResource('question', \App\Http\Controllers\Api\QuestionController::class);
 
 Route::get('user/questions', [\App\Http\Controllers\Api\QuestionApiController::class,'getTodaysQuestions'])->middleware('auth:sanctum');
@@ -47,5 +48,7 @@ Route::get('user/submitted/questions', [\App\Http\Controllers\Api\QuestionApiCon
 Route::get('user/today', [\App\Http\Controllers\Api\QuestionApiController::class,'availableQuiz'])->middleware('auth:sanctum');
 
 Route::post('user/contribute/questions',[ \App\Http\Controllers\Api\QuestionApiController::class, 'contributeQuestion'])->middleware('auth:sanctum');
+
+Route::get('contributed-questions', [\App\Http\Controllers\Api\QuestionController::class, 'contributedQuestions']);
 
 

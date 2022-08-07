@@ -62,4 +62,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserQuestion::class, 'user_id');
     }
+
+    public function todayTempQuestions()
+    {
+        return $this->hasMany(TempQuestions::class,'user_id')->whereDate('created_at','=',today());
+    }
 }

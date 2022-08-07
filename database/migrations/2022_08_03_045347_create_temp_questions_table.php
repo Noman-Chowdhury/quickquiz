@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('temp_questions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->text('question');
             $table->json('options');
             $table->string('correct_ans');
