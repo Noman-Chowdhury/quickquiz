@@ -25,4 +25,9 @@ class UserQuestionAnswer extends Model
     {
         return $this->belongsTo(UserQuestion::class,'user_question_id');
     }
+
+    public function option()
+    {
+        return $this->belongsTo(QuestionOption::class,'option_id');
+    }
 }
