@@ -16,7 +16,7 @@ class DailyResource extends JsonResource
     {
         return [
             'question' => $this->question->question,
-            'my_answer'=>  $this->answer->option->option,
+            'my_answer'=> $this->answer ?  $this->answer->option->option : false,
             'correct_answer'=> $this->question->options()->where('is_correct_option', '=', true)->first() ? $this->question->options()->where('is_correct_option', '=', true)->first()->option : 0 ,
         ];
     }

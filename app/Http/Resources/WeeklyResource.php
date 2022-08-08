@@ -23,7 +23,8 @@ class WeeklyResource extends JsonResource
             'marks_got'=> $this->questions()
                 ->whereIn('id',auth('sanctum')->user()->submittedQuestions()->where('is_correct', true)->pluck('question_id'))
                 ->sum('point'),
-            'exam_date' => auth('sanctum')->user()->submittedQuestions()->where('quiz_id', $this->id)->first()->answer_time
+            'exam_date' => auth('sanctum')->user()->submittedQuestions()->where('quiz_id', $this->id)->first()->answer_time,
+            'status' => $this->expired_at < today() ? 'Expired' : 'Ongoing'
         ];
     }
 }
