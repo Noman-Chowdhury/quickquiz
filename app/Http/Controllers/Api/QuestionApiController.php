@@ -57,8 +57,9 @@ class QuestionApiController extends Controller
         try {
             if (sizeof($request->answers) > 0) {
                 foreach ($request->answers as $answer) {
-                     $ques = UserQuestion::where(['user_id'=>$this->auth_user->id,'question_id'=>$answer['question_id']])->whereDay('answer_time', Carbon::now())->first();
+                    $ques = UserQuestion::where(['user_id'=>$this->auth_user->id,'question_id'=>$answer['question_id']])->whereDay('answer_time', Carbon::now())->first();
                     $ques->is_correct = QuestionOption::find($answer['answer_id'])->is_correct_option;
+                    $ques->marks = QuestionOption::find($answer['answer_id'])->is_correct_option ? Question::find($answer['question_id'])->point : 0 ;
                     $ques->save();
 
 //                    $submit = new UserQuestion();

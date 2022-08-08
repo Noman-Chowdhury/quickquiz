@@ -68,4 +68,10 @@ class QuestionController extends Controller
 
         return response()->json(['success' => true, 'questions' => TempQuesRes::collection($questions)],);
     }
+
+    public function removeContributedQuestion($id)
+    {
+        TempQuestions::findOrFail(decrypt($id))->delete();
+        return response()->json(['success' => true, 'message' => 'Successfully deleted']);
+    }
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('question_id')->constrained('questions')->cascadeOnDelete();
             $table->boolean('is_correct');
+            $table->unsignedFloat('marks')->default(0);
             $table->dateTime('answer_time');
             $table->timestamps();
         });

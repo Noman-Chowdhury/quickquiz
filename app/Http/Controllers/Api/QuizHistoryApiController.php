@@ -34,7 +34,8 @@ class QuizHistoryApiController extends Controller
             'my_mark' => Quiz::find(decrypt($week))->questions()
                 ->whereIn('id',auth('sanctum')->user()->submittedQuestions()->where('is_correct', true)->pluck('question_id'))
                 ->sum('point'),
-            'total_marks'=> Quiz::find(decrypt($week))->questions()->sum('point')
+            'total_marks'=> Quiz::find(decrypt($week))->questions()->sum('point'),
+            'quiz_name' => Quiz::find(decrypt($week))->title
         ]);
     }
 }
